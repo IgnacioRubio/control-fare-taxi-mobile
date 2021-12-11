@@ -1,0 +1,7 @@
+{
+  "name": "control-fare-taxi-mobile",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
