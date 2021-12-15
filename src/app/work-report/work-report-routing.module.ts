@@ -7,6 +7,10 @@ const routes: Routes = [
   {
     path: '',
     component: WorkReportPage
+  },
+  {
+    path: 'work-report-form',
+    loadChildren: () => import('./pages/work-report-form/work-report-form.module').then( m => m.WorkReportFormPageModule)
   }
 ];
 
