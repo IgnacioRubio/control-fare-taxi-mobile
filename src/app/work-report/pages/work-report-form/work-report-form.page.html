@@ -1,7 +1,5 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Formulario Parte de Trabajo</ion-title>
-  </ion-toolbar>
+<ion-header>  
+  <shared-toolbar-back title="Formulario Parte de Trabajo"></shared-toolbar-back>
 </ion-header>
 
 <ion-content>
@@ -20,4 +18,11 @@
     <ion-checkbox [(ngModel)]="isSend" slot="start"></ion-checkbox>
     <ion-label>Enviado</ion-label>
   </ion-item>
+
+  <!-- FAB SAVE + CANCEL WORK REPORT -->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="onSave()">
+      <ion-icon name="save-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>

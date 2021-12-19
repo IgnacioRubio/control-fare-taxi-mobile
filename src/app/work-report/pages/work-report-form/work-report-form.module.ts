@@ -8,6 +8,8 @@ import { WorkReportFormPageRoutingModule } from './work-report-form-routing.modu
 
 import { WorkReportFormPage } from './work-report-form.page';
 
+import { ToolbarBackComponent } from '@shared/components/toolbar-back/toolbar-back.component';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -15,6 +17,9 @@ import { WorkReportFormPage } from './work-report-form.page';
     IonicModule,
     WorkReportFormPageRoutingModule
   ],
-  declarations: [WorkReportFormPage]
+  declarations: [
+    WorkReportFormPage,
+    ToolbarBackComponent
+  ]
 })
 export class WorkReportFormPageModule {}

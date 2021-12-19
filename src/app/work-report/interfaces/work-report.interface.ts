@@ -1,5 +1,5 @@
 export interface WorkReport {
-  id: number,
+  id?: number,
   description: string,
   kilometres: number,
   isSend: boolean,

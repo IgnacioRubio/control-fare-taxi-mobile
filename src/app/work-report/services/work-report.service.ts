@@ -13,7 +13,13 @@ export class WorkReportService {
 
   constructor() { }
 
+  // GET: all records
   getWorkReports(): Observable<WorkReport[]> {
     return of(WORK_REPORTS);
+  }
+
+  // POST: create a new record
+  addWorkReport(workReport: WorkReport): Observable<WorkReport> {
+    return of(workReport);
   }
 }
