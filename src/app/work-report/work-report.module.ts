@@ -4,10 +4,11 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
+import { ListMultiselectComponent } from '@shared/components/list-multiselect/list-multiselect.component';
+
 import { WorkReportPageRoutingModule } from './work-report-routing.module';
 
 import { WorkReportPage } from './work-report.page';
-import { WorkReportListComponent } from './components/work-report-list/work-report-list.component';
 
 @NgModule({
   imports: [
@@ -17,8 +18,8 @@ import { WorkReportListComponent } from './components/work-report-list/work-repo
     WorkReportPageRoutingModule
   ],
   declarations: [
+    ListMultiselectComponent,
     WorkReportPage,
-    WorkReportListComponent
   ]
 })
 export class WorkReportPageModule {}

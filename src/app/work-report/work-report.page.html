@@ -1,12 +1,25 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar [hidden]="multiselectMode">
     <ion-title>PARTES DE TRABAJO</ion-title>
+  </ion-toolbar>
+
+  <ion-toolbar [hidden]="!multiselectMode" color="dark">
+    <ion-buttons>
+      <ion-button (click)="onCloseToolbar()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+      <ion-title> {{ workReportsSelected.length }} </ion-title>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <!-- WORK REPORT LIST -->
-  <app-work-report-list></app-work-report-list>
+  <ion-list-multiselect
+    [dataList]="workReports"
+    [attributesToShow]="workReportsAttributesToShow"
+    (dataClicked)="onClickWork($event)"
+  ></ion-list-multiselect>
 
   <!-- FAB ADD WORK REPORT -->
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
