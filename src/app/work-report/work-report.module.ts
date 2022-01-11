@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { ListMultiselectComponent } from '@shared/components/list-multiselect/list-multiselect.component';
+import { WorkReportListComponent } from './components/work-report-list/work-report-list.component';
 
 import { WorkReportPageRoutingModule } from './work-report-routing.module';
 
@@ -18,7 +18,7 @@ import { WorkReportPage } from './work-report.page';
     WorkReportPageRoutingModule
   ],
   declarations: [
-    ListMultiselectComponent,
+    WorkReportListComponent,
     WorkReportPage,
   ]
 })

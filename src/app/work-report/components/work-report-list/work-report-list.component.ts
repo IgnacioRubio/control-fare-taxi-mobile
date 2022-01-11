@@ -4,13 +4,12 @@ import { AlertController, AlertButton } from '@ionic/angular';
 const ALERT_ROLE_CONFIRM: string = 'confirm';
 
 @Component({
-  selector: 'ion-list-multiselect',
-  templateUrl: './list-multiselect.component.html',
-  styleUrls: ['./list-multiselect.component.scss'],
+  selector: 'work-report-list',
+  templateUrl: './work-report-list.component.html',
+  styleUrls: ['./work-report-list.component.scss'],
 })
-export class ListMultiselectComponent implements OnInit {
+export class WorkReportListComponent implements OnInit {
   @Input() dataList: any[];
-  @Input() attributesToShow: string[];
 
   @Output('dataClicked') dataEvent = new EventEmitter<any>();
   @Output('dataListSelected') dataListSelectedEvent = new EventEmitter<any[]>();

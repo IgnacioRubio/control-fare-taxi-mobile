@@ -12,7 +12,6 @@ import { WorkReportService } from '@work-report/services/work-report.service';
 export class WorkReportPage implements OnInit {
   workReports: WorkReport[] = [];
   workReportsSelected: WorkReport[] = [];
-  workReportsAttributesToShow = ['description', 'kilometres', 'isSend'];
 
   constructor(
     private workReportService: WorkReportService
@@ -30,7 +29,28 @@ export class WorkReportPage implements OnInit {
   }
 
   // LIST MULTISELECT EVENTS
-  onClickWork(event: WorkReport): void {
-    console.log(event)
+
+  onClickWorkReport(workReport: WorkReport): void {
+    console.log(workReport)
+  }
+
+  onSelectedWorkReports(workReports: WorkReport[]): void {
+    console.log(workReports)
+    this.workReportsSelected = workReports;
+  }
+
+  async onDeleteWorkReports(workReports: WorkReport[]): Promise<void> {
+    for await(let workReport of workReports) {
+      this.workReportService.deleteWorkRport(workReport)
+        .subscribe(wr => console.log(wr))
+    }
+  }
+
+  onEditWorkReport(workReport: WorkReport): void {
+    console.log(workReport)
+  }
+
+  onShareWorkReports(workReports: WorkReport[]): void {
+    console.log(workReports)
   }
 }

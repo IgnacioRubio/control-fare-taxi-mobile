@@ -22,4 +22,13 @@ export class WorkReportService {
   addWorkReport(workReport: WorkReport): Observable<WorkReport> {
     return of(workReport);
   }
+
+  // DELETE: delete a new record
+  deleteWorkRport(workReport: WorkReport): Observable<WorkReport> {
+    const indexOfWorkReport = WORK_REPORTS.indexOf(workReport);
+    const workReportDeleted = WORK_REPORTS[indexOfWorkReport];
+    WORK_REPORTS.splice(indexOfWorkReport, 1);
+
+    return of(workReportDeleted);
+  }
 }

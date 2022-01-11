@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar [hidden]="multiselectMode">
+  <ion-toolbar [hidden]="workReportsSelected.length > 0" color="primary">
     <ion-title>PARTES DE TRABAJO</ion-title>
   </ion-toolbar>
 
@@ -15,11 +15,14 @@
 
 <ion-content>
   <!-- WORK REPORT LIST -->
-  <ion-list-multiselect
+  <work-report-list
     [dataList]="workReports"
-    [attributesToShow]="workReportsAttributesToShow"
-    (dataClicked)="onClickWork($event)"
-  ></ion-list-multiselect>
+    (dataClicked)="onClickWorkReport($event)"
+    (dataListSelected)="onSelectedWorkReports($event)"
+    (dataListRemove)="onDeleteWorkReports($event)"
+    (dataEdit)="onEditWorkReport($event)"
+    (dataListShare)="onShareWorkReports($event)"
+  ></work-report-list>
 
   <!-- FAB ADD WORK REPORT -->
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">

@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { ListMultiselectComponent } from './list-multiselect.component';
+import { WorkReportListComponent } from './work-report-list.component';
 
-describe('ListMultiselectComponent', () => {
-  let component: ListMultiselectComponent;
-  let fixture: ComponentFixture<ListMultiselectComponent>;
+describe('WorkReportListComponent', () => {
+  let component: WorkReportListComponent;
+  let fixture: ComponentFixture<WorkReportListComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ ListMultiselectComponent ],
+      declarations: [ WorkReportListComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(ListMultiselectComponent);
+    fixture = TestBed.createComponent(WorkReportListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));
