@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+import { Router } from '@angular/router';
 
 import { WorkReport } from '@work-report/interfaces/work-report.interface';
 import { WorkReportService } from '@work-report/services/work-report.service';
@@ -14,6 +14,7 @@ export class WorkReportPage implements OnInit {
   workReportsSelected: WorkReport[] = [];
 
   constructor(
+    private router: Router,
     private workReportService: WorkReportService
   ) { }
 
@@ -26,6 +27,10 @@ export class WorkReportPage implements OnInit {
       .subscribe((wr: WorkReport[]) => {
         this.workReports = wr;
       });
+  }
+
+  goToWorkReportForm(id: number): void {
+    this.router.navigate(['/work-report/work-report-form', id]);
   }
 
   // LIST MULTISELECT EVENTS
@@ -47,7 +52,7 @@ export class WorkReportPage implements OnInit {
   }
 
   onEditWorkReport(workReport: WorkReport): void {
-    console.log(workReport)
+    this.goToWorkReportForm(workReport.id);
   }
 
   onShareWorkReports(workReports: WorkReport[]): void {

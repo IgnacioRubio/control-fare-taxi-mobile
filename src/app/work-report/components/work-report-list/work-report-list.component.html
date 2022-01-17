@@ -32,7 +32,7 @@
 <ion-list>
   <ion-item *ngFor="let dt of dataList; let i=index" lines="full" button (click)="onClick(dt, i)" (press)="onPress(dt, i)" color="{{ indexListSelected.indexOf(i) != -1 ? 'dark' : '' }}">
     <ion-label>{{ dt.description }}</ion-label>
-    <ion-label>{{ dt.kilometres}} km</ion-label>
+    <ion-label>{{ dt.kilometers}} km</ion-label>
     <ion-label>{{ dt.isSend ? 'Enviado' : 'No enviado' }}</ion-label>
   </ion-item>
 </ion-list>

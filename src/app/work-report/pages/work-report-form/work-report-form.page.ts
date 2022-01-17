@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import * as moment from 'moment';
 
@@ -16,33 +16,44 @@ moment.locale('es');
   styleUrls: ['./work-report-form.page.scss'],
 })
 export class WorkReportFormPage implements OnInit {
-  description = moment().format("D-MMM-YYYY").toLowerCase();
-  kilometers = 0;
-  isSend = false;
+  titleToolbar: string = "Formulario Parte de Trabajo";
+
+  workReport: WorkReport = {
+    description: moment().format("D-MMM-YYYY").toLowerCase(),
+    kilometers: 0,
+    isSend: false
+  };
 
   constructor(
     private router: Router,
+    private route: ActivatedRoute,
     private workReportService: WorkReportService,
     private toastService: ToastService
   ) { }
 
   ngOnInit() {
+    this.getWorkReport();
+  }
+
+  getWorkReport(): void {
+    const id = this.route.snapshot.paramMap.get('id');
     
+    if (id) {
+      this.workReportService.getWorkReportById(Number(id))
+        .subscribe(wr => {
+          if (wr) {
+            this.workReport = wr;
+          }
+        });
+    }
   }
 
   onSave(): void {
-    const workReport: WorkReport = {
-      description: this.description,
-      kilometres: this.kilometers,
-      isSend: this.isSend,
-      createAt: new Date()
-    };
-
-    this.workReportService.addWorkReport(workReport)
+    this.workReportService.addOrUpdateWorkReport(this.workReport)
       .subscribe(
       () => {
         this.toastService.addSuccess();
-        this.router.navigate(['/']);
+        this.router.navigate(['/work-report']);
       }, 
       // error
       () => {
