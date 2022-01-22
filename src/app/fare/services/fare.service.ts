@@ -20,4 +20,13 @@ export class FareService {
 
     return of(fares);
   }
+
+  // DELETE: delete a record
+  deleteFare(fare: Fare): Observable<Fare> {
+    const indexOfFare = FARES.indexOf(fare);
+    const fareDeleted = FARES[indexOfFare];
+    FARES.splice(indexOfFare, 1);
+
+    return of(fareDeleted);
+  }
 }

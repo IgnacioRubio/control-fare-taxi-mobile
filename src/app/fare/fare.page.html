@@ -5,6 +5,8 @@
 <ion-content>
   <fare-list
     [dataList]="fares"
+    (dataClicked)="onClickFare($event)"
     (dataListSelected)="onSelectedFares($event)"
+    (dataListRemove)="onDeleteFares($event)"
   ></fare-list>
 </ion-content>

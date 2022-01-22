@@ -33,8 +33,21 @@ export class FarePage implements OnInit {
 
 
   // LIST EVENTS
+  onClickFare(fare: Fare): void {
+    console.log(fare)
+  }
+  
   onSelectedFares(fares: Fare[]): void {
     this.faresSelected = fares;
+  }
+
+  async onDeleteFares(fares: Fare[]): Promise<void> {
+    for await(let fare of fares) {
+      this.fareService.deleteFare(fare)
+        .subscribe(fare => console.log(fare))
+    }
+
+    this.getFares();
   }
 
 }

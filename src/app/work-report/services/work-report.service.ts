@@ -55,7 +55,7 @@ export class WorkReportService {
     return of(workReport);
   }
 
-  // DELETE: delete a new record
+  // DELETE: delete a record
   deleteWorkRport(workReport: WorkReport): Observable<WorkReport> {
     const indexOfWorkReport = WORK_REPORTS.indexOf(workReport);
     const workReportDeleted = WORK_REPORTS[indexOfWorkReport];
