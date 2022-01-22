@@ -6,6 +6,7 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./toolbar-back.component.scss'],
 })
 export class ToolbarBackComponent implements OnInit {
+  @Input() color: string;
   @Input() title: string;
 
   constructor() { }

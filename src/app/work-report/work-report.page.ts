@@ -33,10 +33,14 @@ export class WorkReportPage implements OnInit {
     this.router.navigate(['/work-report/work-report-form', id]);
   }
 
+  goToWorkReportFare(id: number): void {
+    this.router.navigate(['/work-report', id, 'fare']);
+  }
+
   // LIST MULTISELECT EVENTS
 
   onClickWorkReport(workReport: WorkReport): void {
-    console.log(workReport)
+    this.goToWorkReportFare(workReport.id);
   }
 
   onSelectedWorkReports(workReports: WorkReport[]): void {

@@ -1,0 +1,10 @@
+<ion-header>
+  <shared-toolbar-back title="{{titleToolbar}}" color="primary" [hidden]="faresSelected.length > 0"></shared-toolbar-back>
+</ion-header>
+
+<ion-content>
+  <fare-list
+    [dataList]="fares"
+    (dataListSelected)="onSelectedFares($event)"
+  ></fare-list>
+</ion-content>
