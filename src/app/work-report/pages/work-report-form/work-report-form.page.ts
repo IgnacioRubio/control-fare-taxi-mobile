@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
 
 import * as moment from 'moment';
 
@@ -21,11 +22,12 @@ export class WorkReportFormPage implements OnInit {
   workReport: WorkReport = {
     description: moment().format("D-MMM-YYYY").toLowerCase(),
     kilometers: 0,
-    isSend: false
+    isSend: false,
+    createAt: new Date()
   };
 
   constructor(
-    private router: Router,
+    private location: Location,
     private route: ActivatedRoute,
     private workReportService: WorkReportService,
     private toastService: ToastService
@@ -53,7 +55,7 @@ export class WorkReportFormPage implements OnInit {
       .subscribe(
       () => {
         this.toastService.addSuccess();
-        this.router.navigate(['/work-report']);
+        this.location.back();
       }, 
       // error
       () => {

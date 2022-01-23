@@ -1,5 +1,10 @@
-<ion-header>  
-  <shared-toolbar-back title="{{titleToolbar}}"></shared-toolbar-back>
+<ion-header> 
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ titleToolbar }}</ion-title>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content>
@@ -19,7 +24,7 @@
     <ion-label>Enviado</ion-label>
   </ion-item>
 
-  <!-- FAB SAVE + CANCEL WORK REPORT -->
+  <!-- FAB SAVE -->
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button (click)="onSave()">
       <ion-icon name="save-outline"></ion-icon>

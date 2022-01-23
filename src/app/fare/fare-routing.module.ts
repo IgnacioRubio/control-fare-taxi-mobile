@@ -7,6 +7,14 @@ const routes: Routes = [
   {
     path: '',
     component: FarePage
+  },
+  {
+    path: 'fare-form',
+    loadChildren: () => import('./pages/fare-form/fare-form.module').then( m => m.FareFormPageModule)
+  },
+  {
+    path: 'fare-form/:id',
+    loadChildren: () => import('./pages/fare-form/fare-form.module').then( m => m.FareFormPageModule)
   }
 ];
 

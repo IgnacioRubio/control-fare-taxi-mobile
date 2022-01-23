@@ -4,22 +4,19 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { FarePageRoutingModule } from './fare-routing.module';
+import { FareFormPageRoutingModule } from './fare-form-routing.module';
 
-import { FareListComponent } from './components/fare-list/fare-list.component';
-
-import { FarePage } from './fare.page';
+import { FareFormPage } from './fare-form.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    FarePageRoutingModule
+    FareFormPageRoutingModule
   ],
   declarations: [
-    FarePage,
-    FareListComponent
+    FareFormPage
   ]
 })
-export class FarePageModule {}
+export class FareFormPageModule {}

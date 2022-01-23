@@ -29,6 +29,8 @@ export class WorkReportPage implements OnInit {
       });
   }
 
+  // NAVIGATION
+
   goToWorkReportForm(id: number): void {
     this.router.navigate(['/work-report/work-report-form', id]);
   }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import { Fare } from './interfaces/fare.interface';
 import { FareService } from './services/fare.service';
@@ -10,12 +10,15 @@ import { FareService } from './services/fare.service';
   styleUrls: ['./fare.page.scss'],
 })
 export class FarePage implements OnInit {
+  fareFormRoute: string = this.router.url + '/fare-form';
+
   titleToolbar: string = "Carreras";
 
   fares: Fare[];
   faresSelected: Fare[] = [];
 
   constructor(
+    private router: Router,
     private route: ActivatedRoute,
     private fareService: FareService
   ) { }
@@ -31,6 +34,11 @@ export class FarePage implements OnInit {
       .subscribe((fares: Fare[]) => this.fares = fares);
   }
 
+  // NAVIGATION
+
+  goToFareForm(id: number): void {
+    this.router.navigate([this.router.url, 'fare-form', id]);
+  }
 
   // LIST EVENTS
   onClickFare(fare: Fare): void {
@@ -48,6 +56,14 @@ export class FarePage implements OnInit {
     }
 
     this.getFares();
+  }
+
+  onEditFare(fare: Fare): void {
+    this.goToFareForm(fare.id);
+  }
+
+  onShareFares(fares: Fare[]): void {
+    console.log(fares)
   }
 
 }
