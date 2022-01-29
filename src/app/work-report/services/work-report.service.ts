@@ -1,65 +1,98 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 
+import { KvStorageService } from '@shared/services/kv-storage.service';
+
 import { WorkReport } from '../interfaces/work-report.interface';
 
 import { WORK_REPORTS } from '../mocks/work-reports.mock';
+
+const WORK_REPORT_IDS: string = "workReportIds";
 
 @Injectable({
   providedIn: 'root'
 })
 export class WorkReportService {
+  
 
-  constructor() { }
+  constructor(
+    private kvstorage: KvStorageService
+  ) {
+    // init work report ids list
+    this.createWorkReportIds();
+   }
 
   // GET: one record by id
-  getWorkReportById(id: number): Observable<WorkReport> {
-    const indexOfWorkReport: number = WORK_REPORTS.findIndex(e => {return e.id == id });  
-    const workReport: WorkReport = WORK_REPORTS[indexOfWorkReport];
+  async getWorkReportById(id: string): Promise<WorkReport> {
+    const workReport = await this.kvstorage.get(id);
 
-    return of(workReport);
+    return workReport;
   }
 
   // GET: all records
-  getWorkReports(): Observable<WorkReport[]> {
-    return of(WORK_REPORTS);
+  async getWorkReports(): Promise<WorkReport[]> {
+    const workReportIds: string[] = await this.kvstorage.get(WORK_REPORT_IDS);
+    const workReports: WorkReport[] = [];
+
+    for await (let id of workReportIds) {
+      const workReport = await this.getWorkReportById(id);
+
+      if (workReport) workReports.push(workReport);
+    }
+    
+    return workReports;
   }
 
-  // POST: create a new record
-  addWorkReport(workReport: WorkReport): Observable<WorkReport> {
-    WORK_REPORTS.push(workReport);
+  // INSERT: create a new record
+  async addWorkReport(workReport: WorkReport): Promise<WorkReport> {
+    // init WORK_REPORT_IDS if needed
+    await this.createWorkReportIds();
+    // insert id into WORK_REPORT_IDS
+    await this.kvstorage.unshift(WORK_REPORT_IDS, workReport.id);
+    // add new record
+    await this.kvstorage.set(workReport.id, workReport);
 
-    return of(workReport);
+    return workReport;
   }
 
-  // POST: add or update a record
-  addOrUpdateWorkReport(workReport: WorkReport): Observable<WorkReport> {
-    this.getWorkReportById(workReport.id)
-      .subscribe(wr => {
-        // update
-        if (wr != null) {
-          const indexOfWorkReport: number = WORK_REPORTS.findIndex(e => {return e.id == wr.id });
-          WORK_REPORTS[indexOfWorkReport] = workReport;
-        }
-        // add
-        else {
-          WORK_REPORTS.push(workReport);
-        }
-      });
-    return of(workReport);
+  // UPDATE: update a new record
+  async updateWorkReport(workReport: WorkReport): Promise<WorkReport> {
+    await this.kvstorage.set(workReport.id, workReport);
+    
+    return workReport;
   }
 
-  // PUT: update a new record
-  updateWorkReport(workReport: WorkReport): Observable<WorkReport> {
-    return of(workReport);
+  // INSERT/UPDATE: add or update a record
+  async addOrUpdateWorkReport(workReport: WorkReport): Promise<WorkReport> {
+    const workReportSearch = await this.getWorkReportById(workReport.id);
+
+    // update
+    if (workReportSearch) {
+      await this.updateWorkReport(workReport);
+    }
+    // add
+    else {
+     await this.addWorkReport(workReport);
+    }
+    
+    return workReport;
   }
 
   // DELETE: delete a record
-  deleteWorkRport(workReport: WorkReport): Observable<WorkReport> {
-    const indexOfWorkReport = WORK_REPORTS.indexOf(workReport);
-    const workReportDeleted = WORK_REPORTS[indexOfWorkReport];
-    WORK_REPORTS.splice(indexOfWorkReport, 1);
+  async deleteWorkRport(workReport: WorkReport): Promise<WorkReport> {
+    // remove id from WORK_REPORT_IDS
+    await this.kvstorage.splice(WORK_REPORT_IDS, workReport.id);
+    // remove
+    await this.kvstorage.remove(workReport.id);
 
-    return of(workReportDeleted);
+    return workReport;
+  }
+
+  private async createWorkReportIds(): Promise<void> {
+    const list = await this.kvstorage.get(WORK_REPORT_IDS);
+
+    if (list) return;
+
+    await this.kvstorage.set(WORK_REPORT_IDS, []);
   }
 }

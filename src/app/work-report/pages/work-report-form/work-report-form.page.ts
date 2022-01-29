@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, RouteReuseStrategy } from '@angular/router';
 import { Location } from '@angular/common';
 
 import * as moment from 'moment';
@@ -20,6 +20,7 @@ export class WorkReportFormPage implements OnInit {
   titleToolbar: string = "Formulario Parte de Trabajo";
 
   workReport: WorkReport = {
+    id: new Date().getTime().toString(),
     description: moment().format("D-MMM-YYYY").toLowerCase(),
     kilometers: 0,
     isSend: false,
@@ -27,6 +28,7 @@ export class WorkReportFormPage implements OnInit {
   };
 
   constructor(
+    private router: Router,
     private location: Location,
     private route: ActivatedRoute,
     private workReportService: WorkReportService,
@@ -37,29 +39,22 @@ export class WorkReportFormPage implements OnInit {
     this.getWorkReport();
   }
 
-  getWorkReport(): void {
+  async getWorkReport(): Promise<void> {
     const id = this.route.snapshot.paramMap.get('id');
     
     if (id) {
-      this.workReportService.getWorkReportById(Number(id))
-        .subscribe(wr => {
-          if (wr) {
-            this.workReport = wr;
-          }
-        });
+      this.workReport = await this.workReportService.getWorkReportById(id);
     }
   }
 
-  onSave(): void {
-    this.workReportService.addOrUpdateWorkReport(this.workReport)
-      .subscribe(
-      () => {
-        this.toastService.addSuccess();
-        this.location.back();
-      }, 
-      // error
-      () => {
-        this.toastService.addFailed();
-      });
+  async onSave(): Promise<void> {
+    try {
+      await this.workReportService.addOrUpdateWorkReport(this.workReport);
+
+      this.toastService.addSuccess();
+      this.router.navigate(['/', 'work-report']);
+    } catch (e) {
+      this.toastService.addFailed();
+    }
   }
 }

@@ -29,10 +29,20 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-list>
+<ion-list *ngIf="dataList.length !== 0">
   <ion-item *ngFor="let dt of dataList; let i=index" lines="full" button (click)="onClick(dt, i)" (press)="onPress(dt, i)" color="{{ indexListSelected.indexOf(i) != -1 ? 'dark' : '' }}">
     <ion-label>{{ dt.description }}</ion-label>
     <ion-label>{{ dt.kilometers}} km</ion-label>
     <ion-label>{{ dt.isSend ? 'Enviado' : 'No enviado' }}</ion-label>
   </ion-item>
 </ion-list>
+
+<ion-grid *ngIf="dataList.length === 0">
+  <ion-row class="ion-justify-content-center">
+    <ion-col size="">
+      <ion-text class="ion-text-center">
+        <p>No hay ningún parte de trabajo</p>
+      </ion-text>
+    </ion-col>
+  </ion-row>
+</ion-grid>

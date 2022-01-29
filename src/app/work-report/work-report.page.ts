@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 
 import { WorkReport } from '@work-report/interfaces/work-report.interface';
 import { WorkReportService } from '@work-report/services/work-report.service';
@@ -19,23 +19,26 @@ export class WorkReportPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.getWorkReports();
+    // navigation ends
+    this.router.events.subscribe(navigation => {
+      if (navigation instanceof NavigationEnd){
+        // refresh list and checkeds
+        this.getWorkReports();
+      }
+    });
   }
 
-  getWorkReports(): void {
-    this.workReportService.getWorkReports()
-      .subscribe((wr: WorkReport[]) => {
-        this.workReports = wr;
-      });
+  async getWorkReports(): Promise<void> {
+    this.workReports = await this.workReportService.getWorkReports();
   }
 
   // NAVIGATION
 
-  goToWorkReportForm(id: number): void {
+  goToWorkReportForm(id: string): void {
     this.router.navigate(['/work-report/work-report-form', id]);
   }
 
-  goToWorkReportFare(id: number): void {
+  goToWorkReportFare(id: string): void {
     this.router.navigate(['/work-report', id, 'fare']);
   }
 
@@ -52,9 +55,10 @@ export class WorkReportPage implements OnInit {
 
   async onDeleteWorkReports(workReports: WorkReport[]): Promise<void> {
     for await(let workReport of workReports) {
-      this.workReportService.deleteWorkRport(workReport)
-        .subscribe(wr => console.log(wr))
+      await this.workReportService.deleteWorkRport(workReport);
     }
+
+    await this.getWorkReports();
   }
 
   onEditWorkReport(workReport: WorkReport): void {
