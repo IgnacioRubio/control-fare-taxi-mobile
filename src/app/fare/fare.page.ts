@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 
 import { Fare } from './interfaces/fare.interface';
 import { FareService } from './services/fare.service';
@@ -24,19 +24,24 @@ export class FarePage implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.getFares();
+    // navigation ends
+    this.router.events.subscribe(navigation => {
+      if (navigation instanceof NavigationEnd){
+        // refresh list and checkeds
+        this.getFares();
+      }
+    });    
   }
 
-  getFares(): void {
-    const workReportId: number = Number(this.route.snapshot.paramMap.get('workReportId'));
+  async getFares(): Promise<void> {
+    const workReportId: string = this.route.snapshot.paramMap.get('workReportId');
 
-    this.fareService.getFaresByWorkReportId(workReportId)
-      .subscribe((fares: Fare[]) => this.fares = fares);
+    this.fares = await this.fareService.getFaresByWorkReportId(workReportId);
   }
 
   // NAVIGATION
 
-  goToFareForm(id: number): void {
+  goToFareForm(id: string): void {
     this.router.navigate([this.router.url, 'fare-form', id]);
   }
 
@@ -51,8 +56,7 @@ export class FarePage implements OnInit {
 
   async onDeleteFares(fares: Fare[]): Promise<void> {
     for await(let fare of fares) {
-      this.fareService.deleteFare(fare)
-        .subscribe(fare => console.log(fare))
+      await this.fareService.deleteFare(fare);
     }
 
     this.getFares();

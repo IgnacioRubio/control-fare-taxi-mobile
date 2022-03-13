@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 
+import { KvStorageService } from '@shared/services/kv-storage.service';
+
 import { Fare } from '@fare/interfaces/fare.interface';
 
 import { FARES } from '@fare/mocks/fares.mock';
@@ -10,60 +12,83 @@ import { FARES } from '@fare/mocks/fares.mock';
 })
 export class FareService {
 
-  constructor() { }
+  constructor(
+    private kvstorage: KvStorageService
+  ) { }
 
-  // GET: one record by id
-  getFareById(id: number): Observable<Fare> {
-    const indexOfFare: number = FARES.findIndex(e => {return e.id == id });  
-    const fare: Fare = FARES[indexOfFare];
+  // GET: one record by id + association id
+  async getOneFare(id: string, workReportId: string): Promise<Fare> {
+    // get fares
+    const fares = await this.getFaresByWorkReportId(workReportId);
 
-    return of(fare);
+    if (fares == null || fares.length == 0) return;
+
+    // look for index
+    const index: number = FARES.findIndex(e => {return e.id == id });  
+    const fare: Fare = FARES[index];
+
+    return fare;
   }
 
   // GET: records by association
-  getFaresByWorkReportId(workReportId: number): Observable<Fare[]> {
-    const fares: Fare[] = FARES.filter((fare: Fare) => {
-      return fare.workReportId == workReportId;
-    });
+  async getFaresByWorkReportId(workReportId: string): Promise<Fare[]> {
+    const fares: Fare[] = await this.kvstorage.get(this.getFaresKey(workReportId));
 
-    return of(fares);
+    return fares;
   }
 
-  // POST: create a new record
-  addFare(fare: Fare): Observable<Fare> {
-    FARES.push(fare);
+  // INSERT: create a new record
+  async addFare(fare: Fare): Promise<Fare> {
+    await this.kvstorage.push(this.getFaresKey(fare.workReportId), fare);
 
-    return of(fare);
+    return fare;
   }
 
-  // POST: add or update a record
-  addOrUpdateFare(fare: Fare): Observable<Fare> {
-    this.getFareById(fare.id)
-      .subscribe(far => {
-        // update
-        if (far != null) {
-          const indexOfFare: number = FARES.findIndex(e => {return e.id == far.id });
-          FARES[indexOfFare] = fare;
-        }
-        // add
-        else {
-          FARES.push(fare);
-        }
-      });
-    return of(fare);
+  // UPDATE: update a new record
+  async updateFare(fare: Fare): Promise<Fare> {
+    // get fares
+    const fares = await this.getFaresByWorkReportId(fare.workReportId);
+
+    if (fares == null || fares.length == 0) return;
+
+    // look for index
+    const index: number = fares.findIndex(e => {return e.id == fare.id });  
+    // update fare
+    fares[index] = fare;
+    // update fares
+    await this.kvstorage.set(fare.workReportId, fares);
+
+    return fare;
   }
 
-  // PUT: update a new record
-  updateFare(fare: Fare): Observable<Fare> {
-    return of(fare);
-  }
+  // INSERT/UPDATE: add or update a record
+  async addOrUpdateFare(fare: Fare): Promise<Fare> {
+    const fareSearch = await this.getOneFare(fare.id, fare.workReportId);
+
+    // update
+    if (fareSearch) await this.updateFare(fare);
+    // add
+    else await this.addFare(fare);
+
+    return fare;
+  }  
 
   // DELETE: delete a record
-  deleteFare(fare: Fare): Observable<Fare> {
-    const indexOfFare = FARES.indexOf(fare);
-    const fareDeleted = FARES[indexOfFare];
-    FARES.splice(indexOfFare, 1);
+  async deleteFare(fare: Fare): Promise<Fare> {
+    // get fares
+    const fares = await this.getFaresByWorkReportId(this.getFaresKey(fare.workReportId));
 
-    return of(fareDeleted);
+    if (fares == null || fares.length == 0) return;
+
+    // filter fare with delete fare
+    const faresDelete: Fare[] = fares.filter(e => {return e.id == fare.id });
+    // update fares
+    await this.kvstorage.set(this.getFaresKey(fare.workReportId), faresDelete);
+
+    return fare;
+  }
+
+  private getFaresKey(workReportId: string): string {
+    return `${workReportId}[]`;
   }
 }

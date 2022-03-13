@@ -1,11 +1,11 @@
 export interface Fare {
-  id?: number,
+  id: string,
   origin: string,
   destination: string,
   price: number,
   isPayCard: boolean,
   isSespaService: boolean,
-  workReportId: number,
+  workReportId: string,
   createAt?: Date,
   modifiedAt?: Date
 }

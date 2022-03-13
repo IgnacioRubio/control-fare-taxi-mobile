@@ -8,26 +8,29 @@
 </ion-header>
 
 <ion-content>
-  <!-- INPUT: DESCRIPTION -->
-  <ion-item>
-    <ion-label position="floating">Descripción</ion-label>
-    <ion-input [(ngModel)]="workReport.description" type="text" required></ion-input>
-  </ion-item>
-  <!-- INPUT: KILOMETERS -->
-  <ion-item>
-    <ion-label position="floating">Kilómetros</ion-label>
-    <ion-input [(ngModel)]="workReport.kilometers" type="number" min="0"></ion-input>
-  </ion-item>
-  <!-- INPUT: IS SEND -->
-  <ion-item lines="full">
-    <ion-checkbox [(ngModel)]="workReport.isSend" slot="start"></ion-checkbox>
-    <ion-label>Enviado</ion-label>
-  </ion-item>
+  <form #f="ngForm" (ngSubmit)="onSave()" novalidate>
+    <ion-list>
+      <!-- INPUT: DESCRIPTION -->
+      <ion-item>
+        <ion-label position="floating">Descripción</ion-label>
+        <ion-input #descriptionCtrl="ngModel" [(ngModel)]="workReport.description" name="description" type="text" required></ion-input>
+      </ion-item>
 
-  <!-- FAB SAVE -->
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button (click)="onSave()">
-      <ion-icon name="save-outline"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
+      <ion-item *ngIf="!descriptionCtrl.valid && descriptionCtrl.touched" lines="none">
+        <ion-text class="validation-label-text" color="danger">Descripción es necesaria</ion-text>
+      </ion-item>
+      <!-- INPUT: KILOMETERS -->
+      <ion-item>
+        <ion-label position="floating">Kilómetros</ion-label>
+        <ion-input [(ngModel)]="workReport.kilometers" name="kilometers" type="number" min="0"></ion-input>
+      </ion-item>
+      <!-- INPUT: IS SEND -->
+      <ion-item lines="full">
+        <ion-checkbox [(ngModel)]="workReport.isSend" name="isSend" slot="start"></ion-checkbox>
+        <ion-label>Enviado</ion-label>
+      </ion-item>
+      <!-- BUTTON: SUBMIT -->
+      <ion-button class="ion-margin-top" [disabled]="!f.valid" expand="block" type="submit">Guardar</ion-button>      
+    </ion-list>
+  </form>
 </ion-content>

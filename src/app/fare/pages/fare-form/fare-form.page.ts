@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Location } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import { Fare } from '@fare/interfaces/fare.interface';
 import { FareService } from '@fare/services/fare.service';
@@ -15,50 +14,60 @@ import { ToastService } from '@shared/services/toast.service';
 export class FareFormPage implements OnInit {
   titleToolbar: string = "Formulario Carreras";
 
-  fare: Fare = {
-    origin: '',
-    destination: '',
-    price: 0,
-    isPayCard: false,
-    isSespaService: false,
-    workReportId: null,
-    createAt: new Date()
-  };
+  fareId: string;
+  workReportId: string;
+
+  fare: Fare;
 
   constructor(
-    private location: Location,
+    private router: Router,
     private route: ActivatedRoute,
     private fareService: FareService,
     private toastService: ToastService
   ) { }
 
   ngOnInit() {
-    this.getFare();
+    this.getParams();
+    this.initFare();
   }
 
-  getFare(): void {
-    const id = this.route.snapshot.paramMap.get('id');
+  async initFare(): Promise<void> {
 
-    if (id) {
-      this.fareService.getFareById(Number(id))
-        .subscribe(fare => {
-          if (fare) {
-            this.fare = fare;
-          }
-        });
+    // search for fare
+    if (this.fareId) {
+      this.fare = await this.fareService.getOneFare(this.fareId, this.workReportId);
+    }
+    // create new fare
+    else {
+      this.fare = {
+        id: `fa${new Date().getTime().toString()}`,
+        origin: '',
+        destination: '',
+        price: 0,
+        isPayCard: false,
+        isSespaService: false,
+        workReportId: this.workReportId,
+        createAt: new Date()
+      };
     }
   }
 
-  onSave(): void {
-    this.fareService.addOrUpdateFare(this.fare)
-      .subscribe(
-      () => {
-        this.toastService.addSuccess();
-        this.location.back();
-      }, 
-      // error
-      () => {
-        this.toastService.addFailed();
-      });
+  async onSave(): Promise<void> {
+    try {
+      await this.fareService.addOrUpdateFare(this.fare);
+
+      this.toastService.addSuccess();
+      this.router.navigate(['/', 'work-report', this.workReportId, 'fare']);
+    } catch (e) {
+      this.toastService.addFailed();
+    }
+  }
+
+  getParams(): void {
+    const fareId = this.route.snapshot.paramMap.get('id');
+    const workReportId = this.route.snapshot.paramMap.get('workReportId');
+
+    this.fareId = fareId;
+    this.workReportId = workReportId;
   }
 }

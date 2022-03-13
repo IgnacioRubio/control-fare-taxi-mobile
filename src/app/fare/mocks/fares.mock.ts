@@ -2,93 +2,93 @@ import { Fare } from "@fare/interfaces/fare.interface";
 
 export const FARES: Fare[] = [
   {
-    id: 1,
+    id: 'fa1',
     origin: 'Avilés',
     destination: 'Gijón',
     price: 50,
     isPayCard: false,
     isSespaService: false,
-    workReportId: 1,
+    workReportId: "wr1",
     createAt: new Date()
   },
   {
-    id: 2,
+    id: 'fa2',
     origin: 'Gijón',
     destination: 'Avilés',
     price: 65,
     isPayCard: false,
     isSespaService: false,
-    workReportId: 1,
+    workReportId: "wr1",
     createAt: new Date()
   },
   {
-    id: 3,
+    id: 'fa3',
     origin: 'Avilés',
     destination: 'Luanco',
     price: 25,
     isPayCard: false,
     isSespaService: false,
-    workReportId: 1,
+    workReportId: "wr1",
     createAt: new Date()
   },
   {
-    id: 4,
+    id: 'fa4',
     origin: 'Avilés',
     destination: 'Luanco',
     price: 25,
     isPayCard: false,
     isSespaService: false,
-    workReportId: 2,
+    workReportId: "wr2",
     createAt: new Date()
   },
   {
-    id: 5,
+    id: 'fa5',
     origin: 'Avilés',
     destination: 'Luanco',
     price: 25,
     isPayCard: false,
     isSespaService: false,
-    workReportId: 3,
+    workReportId: "wr3",
     createAt: new Date()
   },
   {
-    id: 6,
+    id: 'fa6',
     origin: 'Avilés',
     destination: 'Luanco',
     price: 25,
     isPayCard: false,
     isSespaService: false,
-    workReportId: 3,
+    workReportId: "wr3",
     createAt: new Date()
   },
   {
-    id: 7,
+    id: 'fa7',
     origin: 'Avilés',
     destination: 'Luanco',
     price: 25,
     isPayCard: false,
     isSespaService: false,
-    workReportId: 4,
+    workReportId: "wr4",
     createAt: new Date()
   },
   {
-    id: 8,
+    id: 'fa8',
     origin: 'Avilés',
     destination: 'Luanco',
     price: 25,
     isPayCard: false,
     isSespaService: false,
-    workReportId: 4,
+    workReportId: "wr4",
     createAt: new Date()
   },
   {
-    id: 9,
+    id: 'fa9',
     origin: 'Avilés',
     destination: 'Luanco',
     price: 25,
     isPayCard: false,
     isSespaService: false,
-    workReportId: 4,
+    workReportId: "wr4",
     createAt: new Date()
   },
 ];

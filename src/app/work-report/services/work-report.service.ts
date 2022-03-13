@@ -17,10 +17,7 @@ export class WorkReportService {
 
   constructor(
     private kvstorage: KvStorageService
-  ) {
-    // init work report ids list
-    this.createWorkReportIds();
-   }
+  ) { }
 
   // GET: one record by id
   async getWorkReportById(id: string): Promise<WorkReport> {
@@ -45,8 +42,6 @@ export class WorkReportService {
 
   // INSERT: create a new record
   async addWorkReport(workReport: WorkReport): Promise<WorkReport> {
-    // init WORK_REPORT_IDS if needed
-    await this.createWorkReportIds();
     // insert id into WORK_REPORT_IDS
     await this.kvstorage.unshift(WORK_REPORT_IDS, workReport.id);
     // add new record
@@ -86,13 +81,5 @@ export class WorkReportService {
     await this.kvstorage.remove(workReport.id);
 
     return workReport;
-  }
-
-  private async createWorkReportIds(): Promise<void> {
-    const list = await this.kvstorage.get(WORK_REPORT_IDS);
-
-    if (list) return;
-
-    await this.kvstorage.set(WORK_REPORT_IDS, []);
   }
 }

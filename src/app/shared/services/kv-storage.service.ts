@@ -30,8 +30,18 @@ export class KvStorageService {
     await this.storage.set(key, value);
   }
 
+  // remove an item
+  async remove(key: string): Promise<any> {
+    const value = await this.storage.remove(key);
+    return value;
+  }
+
+  // ARRAY METHODS
+
   // push an item an array
   async push(key: string, value: any): Promise<void> {
+    // init array if is needed
+    await this.initArray(key);
     // get array
     let values = await this.get(key);
     if (values == null) return;
@@ -43,6 +53,8 @@ export class KvStorageService {
 
   // unshift an item an array
   async unshift(key: string, value: any): Promise<void> {
+    // init array if is needed
+    await this.initArray(key);
     // get array
     let values = await this.get(key);
     if (values == null) return;
@@ -50,18 +62,13 @@ export class KvStorageService {
     values.unshift(value);
     // set the new array
     await this.set(key, values);
-  }
-
-  // remove an item
-  async remove(key: string): Promise<any> {
-    const value = await this.storage.remove(key);
-    return value;
-  }
+  }  
 
   // remove an item an array
   async splice(key: string, value: any): Promise<any> {
     // get array
     let values = await this.get(key);
+    if (values == null) return;
     // get index 
     const index = values.indexOf(value);
     const valueDeleted = values[index];
@@ -70,5 +77,13 @@ export class KvStorageService {
     await this.set(key, values);
 
     return valueDeleted;
+  }
+
+  private async initArray(key: string): Promise<void> {
+    const list = await this.get(key);
+
+    if (list) return;
+
+    await this.set(key, []);
   }
 }

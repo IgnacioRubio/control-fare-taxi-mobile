@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute, RouteReuseStrategy } from '@angular/router';
-import { Location } from '@angular/common';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import * as moment from 'moment';
 
@@ -20,7 +19,7 @@ export class WorkReportFormPage implements OnInit {
   titleToolbar: string = "Formulario Parte de Trabajo";
 
   workReport: WorkReport = {
-    id: new Date().getTime().toString(),
+    id: `wr${new Date().getTime().toString()}`,
     description: moment().format("D-MMM-YYYY").toLowerCase(),
     kilometers: 0,
     isSend: false,
@@ -29,7 +28,6 @@ export class WorkReportFormPage implements OnInit {
 
   constructor(
     private router: Router,
-    private location: Location,
     private route: ActivatedRoute,
     private workReportService: WorkReportService,
     private toastService: ToastService
@@ -40,7 +38,7 @@ export class WorkReportFormPage implements OnInit {
   }
 
   async getWorkReport(): Promise<void> {
-    const id = this.route.snapshot.paramMap.get('id');
+    const id: string = this.route.snapshot.paramMap.get('id');
     
     if (id) {
       this.workReport = await this.workReportService.getWorkReportById(id);
