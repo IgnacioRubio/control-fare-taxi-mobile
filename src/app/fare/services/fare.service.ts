@@ -24,8 +24,8 @@ export class FareService {
     if (fares == null || fares.length == 0) return;
 
     // look for index
-    const index: number = FARES.findIndex(e => {return e.id == id });  
-    const fare: Fare = FARES[index];
+    const index: number = fares.findIndex(e => {return e.id == id });  
+    const fare: Fare = fares[index];
 
     return fare;
   }

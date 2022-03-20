@@ -18,6 +18,8 @@ moment.locale('es');
 export class WorkReportFormPage implements OnInit {
   titleToolbar: string = "Formulario Parte de Trabajo";
 
+  workReportId: string;
+  
   workReport: WorkReport = {
     id: `wr${new Date().getTime().toString()}`,
     description: moment().format("D-MMM-YYYY").toLowerCase(),
@@ -34,10 +36,10 @@ export class WorkReportFormPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.getWorkReport();
+    this.initReport();
   }
 
-  async getWorkReport(): Promise<void> {
+  async initReport(): Promise<void> {
     const id: string = this.route.snapshot.paramMap.get('id');
     
     if (id) {
@@ -54,5 +56,11 @@ export class WorkReportFormPage implements OnInit {
     } catch (e) {
       this.toastService.addFailed();
     }
+  }
+
+  getParams(): void {
+    const workReportId = this.route.snapshot.paramMap.get('id');
+
+    this.workReportId = workReportId;
   }
 }

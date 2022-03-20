@@ -17,7 +17,16 @@ export class FareFormPage implements OnInit {
   fareId: string;
   workReportId: string;
 
-  fare: Fare;
+  fare: Fare = {
+    id: `fa${new Date().getTime().toString()}`,
+    origin: '',
+    destination: '',
+    price: 0,
+    isPayCard: false,
+    isSespaService: false,
+    workReportId: null,
+    createAt: new Date()
+  };
 
   constructor(
     private router: Router,
@@ -32,23 +41,12 @@ export class FareFormPage implements OnInit {
   }
 
   async initFare(): Promise<void> {
-
-    // search for fare
     if (this.fareId) {
       this.fare = await this.fareService.getOneFare(this.fareId, this.workReportId);
     }
-    // create new fare
     else {
-      this.fare = {
-        id: `fa${new Date().getTime().toString()}`,
-        origin: '',
-        destination: '',
-        price: 0,
-        isPayCard: false,
-        isSespaService: false,
-        workReportId: this.workReportId,
-        createAt: new Date()
-      };
+      // set work report id
+      this.fare.workReportId = this.workReportId;
     }
   }
 
