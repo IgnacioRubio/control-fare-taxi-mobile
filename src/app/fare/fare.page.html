@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-toolbar [hidden]="faresSelected.length > 0" color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ titleToolbar }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <fare-list
+    [dataList]="fares"
+    (dataClicked)="onClickFare($event)"
+    (dataListSelected)="onSelectedFares($event)"
+    (dataListRemove)="onDeleteFares($event)"
+    (dataEdit)="onEditFare($event)"
+    (dataListShare)="onShareFares($event)"
+  ></fare-list>
+
+  <!-- FAB ADD FARE -->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button [routerLink]="fareFormRoute">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>
