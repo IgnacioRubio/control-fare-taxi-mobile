@@ -1,9 +1,33 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar [hidden]="workReportsSelected.length > 0" color="primary">
     <ion-title>PARTES DE TRABAJO</ion-title>
+  </ion-toolbar>
+
+  <ion-toolbar [hidden]="!multiselectMode" color="dark">
+    <ion-buttons>
+      <ion-button (click)="onCloseToolbar()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+      <ion-title> {{ workReportsSelected.length }} </ion-title>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <app-work-report-list></app-work-report-list>
+  <!-- WORK REPORT LIST -->
+  <work-report-list
+    [dataList]="workReports"
+    (dataClicked)="onClickWorkReport($event)"
+    (dataListSelected)="onSelectedWorkReports($event)"
+    (dataListRemove)="onDeleteWorkReports($event)"
+    (dataEdit)="onEditWorkReport($event)"
+    (dataListShare)="onShareWorkReports($event)"
+  ></work-report-list>
+
+  <!-- FAB ADD WORK REPORT -->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button routerLink="/work-report/work-report-form">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>

@@ -4,7 +4,9 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "@work-report/*": ["src/app/work-report/*"]
+      "@work-report/*": ["src/app/work-report/*"],
+      "@fare/*": ["src/app/fare/*"],
+      "@shared/*": ["src/app/shared/*"]
     },
     "outDir": "./dist/out-tsc",
     "sourceMap": true,

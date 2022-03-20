@@ -4,11 +4,11 @@ import { AlertController, AlertButton } from '@ionic/angular';
 const ALERT_ROLE_CONFIRM: string = 'confirm';
 
 @Component({
-  selector: 'work-report-list',
-  templateUrl: './work-report-list.component.html',
-  styleUrls: ['./work-report-list.component.scss'],
+  selector: 'fare-list',
+  templateUrl: './fare-list.component.html',
+  styleUrls: ['./fare-list.component.scss'],
 })
-export class WorkReportListComponent implements OnInit {
+export class FareListComponent implements OnInit {
   @Input() dataList: any[];
 
   @Output('dataClicked') dataEvent = new EventEmitter<any>();

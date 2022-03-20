@@ -167,6 +167,9 @@
             }
           }
         }
+      },
+      "i18n": {
+        "sourceLocale": "es-ES"
       }
     }
   },
